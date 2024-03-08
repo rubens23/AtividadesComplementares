@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/labelGrafico"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/largeText"
+        android:text="TOTAL"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:layout_marginTop="40dp"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageButton
+        android:id="@+id/btnMostrarGrafico"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_keyboard_arrow_down_24"
+        app:layout_constraintTop_toTopOf="@id/labelGrafico"
+        app:layout_constraintBottom_toBottomOf="@id/labelGrafico"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="20dp"
+        app:tint="@color/arrowColor"
+        android:background="#00000000"
+        />
+
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/indicadorCircularDeModalidade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        app:indicatorColor="@color/mainPink"
+        app:indicatorSize="180dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/labelGrafico"
+        app:trackColor="@color/black"
+        app:trackThickness="26dp" />
+
+
+    <LinearLayout
+        android:id="@+id/containerTextoGrafico"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@id/indicadorCircularDeModalidade"
+        app:layout_constraintEnd_toEndOf="@id/indicadorCircularDeModalidade"
+        app:layout_constraintStart_toStartOf="@id/indicadorCircularDeModalidade"
+        app:layout_constraintTop_toTopOf="@id/indicadorCircularDeModalidade">
+
+        <TextView
+            android:id="@+id/cargaTotalObtida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/largeText"
+            tools:text="80" />
+
+        <TextView
+            android:id="@+id/cargaTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/largeText"
+            tools:text="/120h" />
+
+
+    </LinearLayout>
+
+
+
+    <ImageButton
+        android:id="@+id/btnMostrarChips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_keyboard_arrow_down_24"
+        app:layout_constraintTop_toBottomOf="@id/indicadorCircularDeModalidade"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="20dp"
+        app:tint="@color/arrowColor"
+        android:background="#00000000"
+        />
+
+    <!--chip custom theme: https://stackoverflow.com/questions/51089150/set-com-google-android-material-chip-chip-selected-color  Konstatin Kuznetsov-->
+    <HorizontalScrollView
+        android:id="@+id/containerChipGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:paddingHorizontal="20dp"
+        android:visibility="gone"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        app:layout_constraintTop_toBottomOf="@id/btnMostrarChips"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:singleSelection="true"
+            >
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipEnsino"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/CustomChipChoice"
+                android:text="Ensino"
+                android:checkable="true"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipPesquisa"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/CustomChipChoice"
+                android:text="Pesquisa"
+                android:checkable="true"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipExtensao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/CustomChipChoice"
+                android:text="Extensão"
+                android:checkable="true"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipEsporteArteCultura"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/CustomChipChoice"
+                android:text="Esporte, Arte e Cultura"
+                android:checkable="true"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipCidadania"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/CustomChipChoice"
+                android:text="Cidadania, Sustentabilidade e Empregabilidade"
+                android:checkable="true"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipTodos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/CustomChipChoice"
+                android:text="Todas Categorias"
+                android:checkable="true"
+                android:clickable="true"
+                android:focusable="true" />
+
+
+
+
+        </com.google.android.material.chip.ChipGroup>
+
+    </HorizontalScrollView>
+
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvAtividadesComplementares"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="0dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/containerChipGroup"
+        tools:itemCount="6"
+        tools:listitem="@layout/item_modalidade" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

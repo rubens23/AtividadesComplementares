@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation.xml"
+    app:startDestination="@id/fragmentBoasVindas">
+
+    <fragment
+        android:id="@+id/fragmentBoasVindas"
+        android:name="com.example.atividadescomplementares.telas.boasVindas.FragmentBoasVindas"
+        android:label="fragment_boas_vindas"
+        tools:layout="@layout/fragment_boas_vindas" >
+        <action
+            android:id="@+id/action_fragmentBoasVindas_to_fragmentCadastro"
+            app:destination="@id/fragmentCadastro" />
+        <action
+            android:id="@+id/action_fragmentBoasVindas_to_fragmentLogin"
+            app:destination="@id/fragmentLogin"
+            app:popUpTo="@+id/fragmentBoasVindas"
+            app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentLogin"
+        android:name="com.example.atividadescomplementares.telas.login.FragmentLogin"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_fragmentLogin_to_fragmentCadastro"
+            app:destination="@id/fragmentCadastro" />
+        <action
+            android:id="@+id/action_fragmentLogin_to_fragmentRecuperarSenha"
+            app:destination="@id/fragmentRecuperarSenha" />
+        <action
+            android:id="@+id/action_fragmentLogin_to_fragmentHome"
+            app:destination="@id/paginaInicial"
+            app:popUpTo="@+id/fragmentLogin"
+            app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentCadastro"
+        android:name="com.example.atividadescomplementares.telas.cadastro.FragmentCadastro"
+        android:label="FragmentCadastro"
+        tools:layout="@layout/fragment_fragment_cadastro">
+        <action
+            android:id="@+id/action_fragmentCadastro_to_fragmentLogin"
+            app:destination="@id/fragmentLogin" />
+    </fragment>
+    <fragment
+        android:id="@+id/paginaInicial"
+        android:name="com.example.atividadescomplementares.telas.home.FragmentHome"
+        android:label="FragmentHome"
+        tools:layout="@layout/fragment_home"/>
+    <fragment
+        android:id="@+id/formulario"
+        android:name="com.example.atividadescomplementares.telas.formulario.FragmentFormulario"
+        android:label="fragment_formulario"
+        tools:layout="@layout/fragment_formulario" />
+    <fragment
+        android:id="@+id/fragmentRecuperarSenha"
+        android:name="com.example.atividadescomplementares.telas.recuperarSenha.FragmentRecuperarSenha"
+        android:label="FragmentRecuperarSenha"
+        tools:layout="@layout/fragment_recuperar_senha">
+        <action
+            android:id="@+id/action_fragmentRecuperarSenha_to_fragmentLogin"
+            app:destination="@id/fragmentLogin" />
+    </fragment>
+    <fragment
+        android:id="@+id/configuracoesDoPerfil"
+        android:name="com.example.atividadescomplementares.telas.configuracoes.FragmentConfiguracoes"
+        android:label="FragmentConfiguracoes"
+        tools:layout="@layout/fragment_configuracoes"/>
+</navigation>

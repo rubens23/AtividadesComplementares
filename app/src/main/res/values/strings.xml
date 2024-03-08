@@ -1,0 +1,72 @@
+<resources>
+    <string name="app_name">Atividades Complementares</string>
+    <string name="clique_aqui"><u>Clique aqui</u></string>
+    <string name="esqueci_minha_senha"><u>Esqueci minha senha</u></string>
+    <string-array name="modalidades">
+        <item>Ensino</item>
+        <item>Pesquisa(IC)</item>
+        <item>Extensão</item>
+        <item>Esporte, Arte e Cultura</item>
+        <item>Cidadania, Sustentabilidade e Empregabilidade</item>
+    </string-array>
+
+
+
+    <string-array name="atividadesEnsino">
+        <item>Cursos de idioma</item>
+        <item>Monitoria</item>
+        <item>Disciplina correlata não prevista na grade</item>
+        <item>Curso na área de informática</item>
+        <item>Curso técnico ou profissionalizante correlato</item>
+        <item>Resenhas de artigos correlatos</item>
+        <item>Ouvinte em banca de TCC</item>
+        <item>Participação em núcleos de estudo</item>
+        <item>Participação em atividades preparatórias- OAB, ANASEM, OUTROS</item>
+        <item>Participação em atividade preparatória para o ENADE</item>
+        <item>Aula magna</item>
+        <item>Participação no teste de progresso ou correlato</item>
+    </string-array>
+
+    <string-array name="atividadesPesquisa">
+        <item>Projeto de Iniciação Científica</item>
+        <item>Escrita de Trabalhos de Iniciação Científica</item>
+        <item>Trabalho de Pesquisa gerando artigo</item>
+        <item>Congressos/Seminários/Fórum/Encontro/Mini curso nas IES</item>
+        <item>Congressos/Seminários/Fórum/Encontro/Mini curso fora IES</item>
+        <item>Artigo submetido para publicação</item>
+        <item>Artigo publicado</item>
+    </string-array>
+
+    <string-array name="atividadesExtensao">
+        <item>Projeto de Extensão</item>
+        <item>Visitas externas programadas</item>
+        <item>Participação em audiências</item>
+        <item>Participação em Ong\'s</item>
+        <item>Cursos de Extensão</item>
+    </string-array>
+
+    <string-array name="atividadesEsporteArteCultura">
+        <item>Organizador de eventos de extensão</item>
+        <item>Participação em atividades culturais</item>
+        <item>Participação em atividades esportivas</item>
+        <item>Comunicação livre na mídia</item>
+        <item>Elaboração de Aplicativos</item>
+        <item>Paticipação em atividades de internacionalização</item>
+        <item>Visitação em atividades culturais, esportivas ou artísticas</item>
+        <item>Participação em atléticas</item>
+    </string-array>
+
+    <string-array name="atividadesCidadaniaSustentabilidadeEmpregabilidade">
+        <item>Doação de sangue</item>
+        <item>Participação em eventos em entidades sem fins lucrativos</item>
+        <item>Participação de juri simulado</item>
+        <item>Participação em juri realizado na vara do tribunal do juri</item>
+        <item>Estágios não curriculares</item>
+        <item>Representação discente</item>
+        <item>Representação em ligas acadêmicas</item>
+        <item>Atividades de empreendedorismo e inovação</item>
+        <item>Aulas de reforço</item>
+        <item>Curso profissionalizante ou de instrução correlato</item>
+        <item>Audiências</item>
+    </string-array>
+</resources>
