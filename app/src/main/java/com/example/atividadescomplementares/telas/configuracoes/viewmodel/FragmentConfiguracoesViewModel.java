@@ -13,25 +13,73 @@ import com.example.atividadescomplementares.dados.user.UserFirebase;
 
 import java.util.Objects;
 
+
+/**
+ * viewModel para ponte entre dados e tela.
+ *
+ * Nessa viewModel em específico, operações de configurações são requisitadas
+ * a camada de dados, quando as operações são concluidas, a tela fica sabendo
+ * através dos observaveis(objetos do tipo LiveData)
+ */
 public class FragmentConfiguracoesViewModel extends ViewModel {
 
+    //as proximas duas variaveis representam o valor do email e carga que o usuario já tem cadastrado
+    //elas são inicializadas com empty string e 0 porque esses valores cadastrados ainda não foram obtidos
+    //nesse momento.
+
+    //essas variaveis tambem servem para comparação quando o user quiser cadastrar carga ou email novos
+    //se ele colocar campos iguais ao que ja estao cadastrados, a alteração não vai ser feita(afinal não tem nada para ser alterado)
     public String emailInicial = "";
     public Integer cargaNecessariaInicial = 0;
 
+
+    //objeto liveData que pode ser observado pela tela(fragment).
     public MutableLiveData<Integer> cargaTotalNecessaria = new MutableLiveData<>();
 
+
+    //instancia para acesso aos metodos do firebase
     private PersistenciaFirebase persistenciaFirebase = new PersistenciaFirebase();
+
+    //instancia para acesso aos metodos do firebase
 
     private UserFirebase userFirebase = new UserFirebase();
 
+    //instancia para acesso aos metodos do firebase
+
+    //objeto liveData que pode ser observado pela tela(fragment)
     private RecuperarSenhaFirebase recuperarSenhaFirebase = new RecuperarSenhaFirebase();
+
+    //objeto liveData que pode ser observado pela tela(fragment)
 
     public MutableLiveData<String> resultadoEnvioEmailRecuperacao = new MutableLiveData<>();
 
+    //objeto liveData que pode ser observado pela tela(fragment)
+
     public MutableLiveData<String> resultadoSaveNovoEmail = new MutableLiveData<>();
+
+    //objeto liveData que pode ser observado pela tela(fragment)
 
     public MutableLiveData<String> resultadoSaveNovaCargaHoraria = new MutableLiveData<>();
 
+
+    /**
+     * uma explicação melhor para esses objetos liveData:
+     *
+     * Quando esses objetos liveData recebem um novo valor, a tela sera avisada de que um novo valor
+     * esta disponivel e a partir disso conseguirá tomar os procedimentos necessarios(mostrar uma mensagem na tela, iniciar outro metodo etc)
+     */
+
+
+    /**
+     * as tres variaveis a seguir servem para impedir que a mensagem
+     * seja mostrada na tela em momentos que não precisam ser mostradas.
+     *
+     * Por exemplo, quando eu altero o email a mensagem deve ser mostrada,
+     * porem quando o user altera o email, sai da tela e volta para a tela de configuracoes,
+     * a mensagem nao deve aparecer nesse caso(a mensagem apareceria denovo pois o livedata salva o estado salvo anteriormente)
+     *
+     * Para mais informações dê uma olhada na documentação de livedata do android
+     */
     public boolean podeMostrarSnackDeRecuperacaoDeSenha = false;
 
     public boolean podeMostrarSnackDeSaveDeNovoEmail = false;
@@ -40,6 +88,7 @@ public class FragmentConfiguracoesViewModel extends ViewModel {
 
 
 
+    gfhgfh
     public void pegarCargaTotal() {
         persistenciaFirebase.pegarCargaTotalNecessaria(new PegouCargaHorariaTotal() {
             @Override
@@ -74,6 +123,9 @@ public class FragmentConfiguracoesViewModel extends ViewModel {
     }
 
 
+    /*
+    para entender o que os metodos a seguir fazem leia o nome da função
+     */
 
     public void salvarNovoEmail(String email, String senha, String emailNovo) {
         persistenciaFirebase.mudarEmailDoUserNoFirebaseAuth(email, senha, emailNovo, new MudouEmail() {
@@ -94,6 +146,7 @@ public class FragmentConfiguracoesViewModel extends ViewModel {
         });
     }
 
+    //Db quer dizer banco de dados
     private void salvarNovoEmailNoDb(String emailNovo) {
         persistenciaFirebase.alterarEmailNoRealtimeDb(emailNovo);
     }

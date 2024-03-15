@@ -14,14 +14,28 @@ import com.example.atividadescomplementares.databinding.ItemModalidadeBinding;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * adapter para a recyclerview de atividades complementares
+ *
+ * recyclerview é o nome da view que vai no xml e essa view serve para mostrar listas na tela.
+ *
+ * Esse adapter é necessario para pegar cada item da lista e mostrar na tela, reciclando por novos itens
+ * assim que a lista for scrollada para cima ou para baixo.
+ *
+ * Para mais informações sobre os adapters e as recycler views, leia a documentação do android
+ */
 public class AtividadeAdapter extends RecyclerView.Adapter<AtividadeAdapter.ViewHolder> {
 
+    //lista que sera mostrada na tela
     private List<AtividadeComplementar> listaDeAtividades;
 
     public AtividadeAdapter(List<AtividadeComplementar> listaDeAtividades) {
         this.listaDeAtividades = listaDeAtividades;
     }
 
+
+    //esse metodo infla o layout de cada item no item da recycler view
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -30,12 +44,15 @@ public class AtividadeAdapter extends RecyclerView.Adapter<AtividadeAdapter.View
         return new ViewHolder(binding);
     }
 
+    //pega o item da lista e manda para a classe de viewHolder desenhar o item na tela
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.bind(listaDeAtividades.get(position));
 
     }
 
+
+    //pega a contagem de itens para fazer o controle do scroll e reciclagens de itens
     @Override
     public int getItemCount() {
         return listaDeAtividades.size();
@@ -48,6 +65,7 @@ public class AtividadeAdapter extends RecyclerView.Adapter<AtividadeAdapter.View
             this.binding = binding;
         }
 
+        //esse metodo coloca os itens da lista no item que vai na recycler view
         @SuppressLint("SetTextI18n")
         private void bind(AtividadeComplementar atividadeComplementar){
 

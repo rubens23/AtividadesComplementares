@@ -7,10 +7,19 @@
     android:orientation="vertical"
     tools:context=".telas.formulario.FragmentFormulario">
 
+    <!--utilizei a scrollview porque se o zoom ou tamanho da fonte estiverem muito grandes, é possivel rolar para baixo -->
+    <!--para ver o resto do conteudo. Se n tivesse a scrollview, a tela ficaria cortada em telas com zoom ou fontes maiores -->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
+        <!--aqui utilizei um linear layout ja que o layout requer que as views fiquem uma após a outra (verticalmente)-->
+        <!--não tem necessidade de utilizar um constraint layout em casos simples como esse. Constraint layout é mais recomendado -->
+        <!--para layouts um pouquinho mais complexos, e tbm quando vc quer um controle maior sobre o posicionamento -->
+
+
 
 
 

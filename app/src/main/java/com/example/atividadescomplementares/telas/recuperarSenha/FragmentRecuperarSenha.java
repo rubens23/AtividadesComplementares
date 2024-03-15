@@ -21,10 +21,16 @@ import com.google.android.material.snackbar.Snackbar;
 
 public class FragmentRecuperarSenha extends Fragment {
 
+
+    //instancia da viewModel
     private FragmentRecuperarSenhaViewModel mViewModel;
 
+
+    //instancia do binding
     private FragmentRecuperarSenhaBinding binding;
 
+
+    //observer que observa mudanças no livedata que contem o resultado do envio do email de troca de senha
     Observer<String> resultadoEmailRecuperacao = new Observer<String>() {
         @Override
         public void onChanged(String s) {
@@ -34,6 +40,8 @@ public class FragmentRecuperarSenha extends Fragment {
     } ;
 
 
+
+    //para mais informaçoes sobre esse metodo visite o mesmo metodo no FragmentBoasVindas
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -49,6 +57,8 @@ public class FragmentRecuperarSenha extends Fragment {
     }
 
 
+    //para mais informaçoes sobre esse metodo visite o mesmo metodo no FragmentBoasVindas
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -63,9 +73,12 @@ public class FragmentRecuperarSenha extends Fragment {
 
     private void onCLickListeners() {
         binding.btnIrParaLogin.setOnClickListener(v->{
+            //navega para a tela de login
             Navigation.findNavController(v).navigate(FragmentRecuperarSenhaDirections.actionFragmentRecuperarSenhaToFragmentLogin());
         });
 
+
+        //se email for valido começa o processo de envio de email de troca de senha
         binding.btnRecuperarSenha.setOnClickListener(v->{
             String email = binding.etEmailRecuperacao.getText().toString();
             if(email.isEmpty()){
@@ -76,11 +89,15 @@ public class FragmentRecuperarSenha extends Fragment {
         });
     }
 
+
+    //msotra uma mensagem na tela quando necessário
     private void showSnackbar(String s) {
         Snackbar.make(getActivity().findViewById(android.R.id.content), s, Snackbar.LENGTH_LONG).show();
 
     }
 
+
+    //destroi os observers assim que o fragment for destruído
     @Override
     public void onDestroyView() {
         super.onDestroyView();

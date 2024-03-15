@@ -25,14 +25,15 @@ import com.google.android.material.snackbar.Snackbar;
 
 public class FragmentLogin extends Fragment {
 
+
+    //instancia da viewModel
     private FragmentLoginViewModel mViewModel;
 
+    //instancia do binding
     private FragmentLoginBinding binding;
 
-    public static FragmentLogin newInstance() {
-        return new FragmentLogin();
-    }
 
+    //para mais informaçoes sobre esse metodo visite o mesmo metodo no FragmentBoasVindas
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -41,6 +42,8 @@ public class FragmentLogin extends Fragment {
         binding = FragmentLoginBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
+
+    //para mais informaçoes sobre esse metodo visite o mesmo metodo no FragmentBoasVindas
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -55,12 +58,10 @@ public class FragmentLogin extends Fragment {
             @Override
             public void onChanged(String s) {
                 if(s == "login feito com sucesso"){
+                    //assim que o resultado de login for observado e ele for de sucesso,
+                    //usa o metodo do NavigationComponent para navegar para a tela de Home
 
-//                    NavOptions navOptions = new NavOptions.Builder()
-//                            .setPopUpTo(R.id.fragmentLogin, true)
-//                                    .build();
 
-                    //Navigation.findNavController(requireView()).navigate(FragmentLoginDirections.actionFragmentLoginToFragmentHome(), navOptions);
                     Navigation.findNavController(requireView()).navigate(FragmentLoginDirections.actionFragmentLoginToFragmentHome());
 
                 }else {
@@ -73,10 +74,12 @@ public class FragmentLogin extends Fragment {
 
     private void onClickListeners() {
         binding.btnCadastrar.setOnClickListener(v->{
+            //navega para a tela de cadastro
             Navigation.findNavController(v).navigate(FragmentLoginDirections.actionFragmentLoginToFragmentCadastro());
         });
 
         binding.olhoMostrarSenha.setOnClickListener(v->{
+            //controla a visibilidade do olho de mostrar senha
             if(mViewModel.olhoDaSenhaAberto){
                 fecharOlhoDaSenha();
                 esconderSenha();
@@ -90,9 +93,11 @@ public class FragmentLogin extends Fragment {
         });
 
         binding.btnEsqueciSenha.setOnClickListener(v->{
+            //navega para a tela de esqueceu senha
             Navigation.findNavController(v).navigate(FragmentLoginDirections.actionFragmentLoginToFragmentRecuperarSenha());
         });
 
+        //ao clicar no login e os campos serem validos, tenta fazer login
         binding.btnLogin.setOnClickListener(v->{
             String email = binding.etEmail.getText().toString();
             String senha = binding.etSenha.getText().toString();
@@ -106,10 +111,18 @@ public class FragmentLogin extends Fragment {
         });
     }
 
+
+    //mostra mensagens na tela quando necessário
     private void showSnackbar(String s) {
         Snackbar.make(getActivity().findViewById(android.R.id.content), s, Snackbar.LENGTH_LONG).show();
     }
 
+
+    /**
+     * todos os metodos abaixo são para controlar o comportamento do olho de mostrar senha
+     *
+     * para saber o que cada um faz leia o nome da função
+     */
     private void fecharOlhoDaSenha() {
         binding.olhoMostrarSenha.setImageResource(R.drawable.baseline_remove_red_eye_24);
         mViewModel.olhoDaSenhaAberto = false;

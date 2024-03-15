@@ -7,6 +7,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".telas.boasVindas.FragmentBoasVindas">
 
+
+
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
@@ -34,6 +36,8 @@
         />
 
 
+
+    <!--eu uso esse FrameLayout para colocar uma sombra atras do botao-->
 
     <FrameLayout
         android:layout_width="0dp"
@@ -69,6 +73,10 @@
 
 
 
+
+    <!--aqui eu uso um LinearLayout que é um ViewGroup igual ao constraint layout porem-->
+    <!--ele serve para posicionar as views uma em cima da outra(vertical) ou uma do lado da outra(horizontal)-->
+    <!--aqui eu coloquei dois textos um do lado do outro e depois usei o constraint para prender o linear layout ao botão de login-->
 
     <LinearLayout
         android:id="@+id/containerCadastrar"

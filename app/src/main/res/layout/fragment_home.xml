@@ -31,6 +31,8 @@
         />
 
 
+
+    <!--esse é o componente que eu uso para fazer o grafico. Ele é um progress bar redondo, que serve perfeitamente para casos como o do nosso app-->
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/indicadorCircularDeModalidade"
         android:layout_width="wrap_content"
@@ -101,6 +103,8 @@
         app:layout_constraintTop_toBottomOf="@id/btnMostrarChips"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
+
+        <!--Aqui é onde fica o chip group que serve para fazer aquele filtro com as modalidades de atividade complementares-->
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chipGroup"
@@ -178,6 +182,9 @@
 
 
 
+    <!--recycler view é o que se usa para mostrar listas na tela.-->
+    <!--A recyclerview precisa de uma lista de dados, um layout que vai servir de base para o layout todos itens da lista-->
+    <!--e um adapter para juntar os dados com o layout-->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvAtividadesComplementares"
         android:layout_width="match_parent"

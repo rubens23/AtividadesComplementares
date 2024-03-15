@@ -27,15 +27,24 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+
+/**
+ * classe que contem metodos de acesso ao realtimedatabase do firebase
+ */
 public class PersistenciaFirebase {
 
     private DatabaseReference mDatabase;
+
+    //tag para fazer log das funções presentes nessa classe
     private String tag = "PersistenciaFirebase";
 
+    //construtor que recebe a inicialização do database que sera utilizado aqui dentro dessa classe
     public PersistenciaFirebase() {
         this.mDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
+
+    //função para salvar as informações de cadastro do usuario como nome, email e carga horaria
     public void salvarInformacoesDoNovoUsuario(String nome, String email, int cargaHoraria, CadastroNoDBCallback cadastroNoDBCallback) {
         UserInfo user = new UserInfo(nome, email, cargaHoraria, Collections.emptyList());
 
@@ -62,6 +71,7 @@ public class PersistenciaFirebase {
     }
 
 
+    //função para salvar uma nova atividade complementar
     public void salvarNovaAtividadeComplementar(AtividadeComplementar atividadeComplementar, SalvouAtividadeCallback salvouAtividadeCallback) {
         if (FirebaseAuth.getInstance().getCurrentUser().getUid() != null) {
             DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -114,6 +124,7 @@ public class PersistenciaFirebase {
     }
 
 
+    //função para pegar as atividades complementares que o user já tem cadastradas
     public void pegarAtividadesComplementaresPorUser(PegouListaDeAtividadesComplementares pegouLista) {
         if (FirebaseAuth.getInstance().getCurrentUser().getUid() != null) {
             DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -147,6 +158,7 @@ public class PersistenciaFirebase {
 
     }
 
+    //função para pegar as atividades complementares do user por modalidade(Ensino, Pesquisa etc)
     public void pegarAtividadesComplementaresPorUserEModalidade(String modalidadeEscolhida, PegouListaDeAtividadesComplementares pegouLista) {
         if (FirebaseAuth.getInstance().getCurrentUser().getUid() != null) {
             DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -192,6 +204,8 @@ public class PersistenciaFirebase {
 
     }
 
+
+    //função para pegar a carga total de horas que o user precisa entregar
     public void pegarCargaTotalNecessaria(PegouCargaHorariaTotal pegouCargaHorariaTotal) {
         if (FirebaseAuth.getInstance().getCurrentUser().getUid() != null) {
             DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -222,6 +236,7 @@ public class PersistenciaFirebase {
 
 
 
+    //função para mudar o email cadastrado do user la no authentication do firebase
     public void mudarEmailDoUserNoFirebaseAuth(String email, String senha, String emailNovo, MudouEmail mudouEmail) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -260,6 +275,7 @@ public class PersistenciaFirebase {
                 });
     }
 
+    //função que salva o email alterado no database do user
     public void alterarEmailNoRealtimeDb(String emailNovo) {
         if (FirebaseAuth.getInstance().getCurrentUser().getUid() != null) {
             DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -288,6 +304,8 @@ public class PersistenciaFirebase {
 
     }
 
+
+    //função para alterar a quantidade de horas necessarias que o user precisa entregar
     public void alterarCargaHorariaTotalDoUser(Integer novaCargaHoraria, SalvouNovaCargaHoraria salvouNovaCargaHoraria) {
         if (FirebaseAuth.getInstance().getCurrentUser().getUid() != null) {
             DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());

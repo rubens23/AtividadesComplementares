@@ -8,6 +8,8 @@
 
 
 
+
+    <!--a bottom navigation é onde ficam os icones de home, formulario e configuracoes-->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,6 +19,8 @@
         app:menu="@menu/main_menu"
         android:id="@+id/bottomNavigationView"/>
 
+    <!--fragment container view é o container de fragments que possibilita a navegação-->
+    <!--e tambem é a estrutura recomendada ao utilizar a bottom navigation view-->
     <androidx.fragment.app.FragmentContainerView
         android:layout_width="0dp"
         android:layout_height="0dp"

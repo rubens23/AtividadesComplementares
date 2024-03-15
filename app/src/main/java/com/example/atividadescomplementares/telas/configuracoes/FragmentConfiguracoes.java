@@ -24,10 +24,15 @@ import com.google.android.material.snackbar.Snackbar;
 
 public class FragmentConfiguracoes extends Fragment {
 
+
+    //instancia da viewModel
     private FragmentConfiguracoesViewModel mViewModel;
 
+    //instancia do viewBinding
     private FragmentConfiguracoesBinding binding;
 
+
+    //Observer do livedata de cargaTotalNecessaria(carga total de horas de atividades complementares necessaria para o usuario entregar)
     private Observer<Integer> cargaTotalNecessaria = new Observer<Integer>() {
         @Override
         public void onChanged(Integer cargaTotalNecessaria) {
@@ -37,6 +42,8 @@ public class FragmentConfiguracoes extends Fragment {
         }
     };
 
+
+    //observer que observa se o email para troca de senha foi enviado
     Observer<String> resultadoEmailRecuperacao = new Observer<String>() {
         @Override
         public void onChanged(String s) {
@@ -49,6 +56,8 @@ public class FragmentConfiguracoes extends Fragment {
         }
     } ;
 
+
+    //observer que observa o resultado do save do novoEmail(novo email escolhido na configuração)
     Observer<String> resultadoSaveNovoEmail = new Observer<String>() {
         @Override
         public void onChanged(String s) {
@@ -61,6 +70,8 @@ public class FragmentConfiguracoes extends Fragment {
         }
     };
 
+
+    //observer que observa o resultado do save da nova carga horaria total
     Observer<String> resultadoSaveNovaCargaHoraria = new Observer<String>() {
         @Override
         public void onChanged(String s) {
@@ -74,6 +85,8 @@ public class FragmentConfiguracoes extends Fragment {
 
 
 
+    //para explicacao sobre esse metodo visite o comentario do onCreateView do FragmentBoasVindas
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -85,24 +98,34 @@ public class FragmentConfiguracoes extends Fragment {
         return binding.getRoot();
     }
 
+    //para explicacao sobre esse metodo visite o comentario do onViewCreated do FragmentBoasVindas
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //inicia os observers
         initObservers();
+        //pega carga horaria total inicial
         pegarCargaTotal();
+        //pega o email que ja esta cadastrado
         pegarEmail();
         onClickListeners();
 
     }
 
+
     private void onClickListeners() {
         binding.btnMudarSenha.setOnClickListener(v->{
+            //chamar a viewModel para enviar o email de troca de senha assim que o botão mudar senha for pressionado
             mViewModel.enviarEmailDeRecuperacaoDeSenha();
 
         });
 
         binding.btnSalvarNovoEmail.setOnClickListener(v->{
+            //se o email não for igual ao antigo mostra o dialog de reautenticação
+            //o dialog de reatuenticação é necessario pq o firebase requer que
+            //o usuario se reautentique para confirmar a troca do email
             String email = binding.etNovoEmail.getText().toString();
             if(!email.equals(mViewModel.emailInicial) ){
                 mostrarDialogDeReautenticacao(email);
@@ -112,6 +135,7 @@ public class FragmentConfiguracoes extends Fragment {
         });
 
         binding.btnSalvarNovaCargaHoraria.setOnClickListener(v->{
+            //quando pressionado salva a nova carga horaria(se ela for diferente da que já estava cadastrada)
             Integer novaCargaHoraria = Integer.valueOf(binding.etCargaHoraria.getText().toString());
             if(!novaCargaHoraria.equals(mViewModel.cargaNecessariaInicial)){
                 mViewModel.alterarCargaHorariaTotalDoUser(novaCargaHoraria);
@@ -123,6 +147,7 @@ public class FragmentConfiguracoes extends Fragment {
     }
 
     private void mostrarDialogDeReautenticacao(String emailNovo) {
+        //aqui eu crio as views das edit texts que servirão para o usuario se autenticar
         View view = LayoutInflater.from(requireContext()).inflate(R.layout.layout_reautenticacao, null);
         EditText etEmail = view.findViewById(R.id.etEmail);
         EditText etSenha = view.findViewById(R.id.etSenha);
@@ -130,6 +155,8 @@ public class FragmentConfiguracoes extends Fragment {
         etSenha.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
 
 
+        //Construção do dialog, que vai consistir em uma caixa com dois campos para entrada do email e senha de autenticação
+        //e um botao para confirmar a autenticação
 
         AlertDialog dialog = new AlertDialog.Builder(requireContext())
                 .setTitle("Para alterar o e-mail se autentique novamente:")
@@ -164,6 +191,7 @@ public class FragmentConfiguracoes extends Fragment {
 
     }
 
+    //mostra uma mensagem na tela quando necessario
     private void showSnackbar(String s) {
         Snackbar.make(getActivity().findViewById(android.R.id.content), s, Snackbar.LENGTH_LONG).show();
 
@@ -180,16 +208,22 @@ public class FragmentConfiguracoes extends Fragment {
         setarEmailNaEditText(email);
     }
 
+    //seta o valor atual da carga total na edittext
     private void setarCargaTotalNaEditText(Integer cargaTotalNecessaria) {
         binding.etCargaHoraria.setText(String.valueOf(cargaTotalNecessaria));
     }
 
+    //seta o email atual na edittext
     private void setarEmailNaEditText(String email){
         binding.etNovoEmail.setText(email);
 
     }
 
 
+
+
+    //quando esse fragment for destruido remover os observers
+    //para garantir que o live data nao continue sendo observado
     @Override
     public void onDestroyView() {
         super.onDestroyView();

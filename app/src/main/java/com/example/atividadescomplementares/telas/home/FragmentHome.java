@@ -26,10 +26,14 @@ import java.util.List;
 
 public class FragmentHome extends Fragment {
 
+
+    //instancia da viewModel
     private FragmentHomeViewModel mViewModel;
 
+    //instancia do binding
     private FragmentHomeBinding binding;
 
+    //observer que observa o resultado da lista de atividades complementares
     Observer<List<AtividadeComplementar>> resultadoListaDeAtividades = new Observer<List<AtividadeComplementar>>() {
         @Override
         public void onChanged(List<AtividadeComplementar> atividadeComplementars) {
@@ -40,6 +44,8 @@ public class FragmentHome extends Fragment {
 
     };
 
+
+    //observer que observa o resultado da lista de atividade complementares por modalidade
     Observer<List<AtividadeComplementar>> resultadoListaDeAtividadesPorModalidade = new Observer<List<AtividadeComplementar>>() {
         @Override
         public void onChanged(List<AtividadeComplementar> atividadeComplementars) {
@@ -49,6 +55,8 @@ public class FragmentHome extends Fragment {
 
     };
 
+
+    //observer que observa o resultado da carga total
     Observer<String> resultadoCargaTotal = new Observer<String>() {
         @Override
         public void onChanged(String cargaTotal) {
@@ -61,6 +69,7 @@ public class FragmentHome extends Fragment {
 
 
 
+    //observer que observa o resultado da carga horaria obtida até o momento(quantas horas o user já completou)
     Observer<String> resultadoCargaTotalObtida = new Observer<String>() {
         @Override
         public void onChanged(String cargaTotalObtida) {
@@ -72,6 +81,8 @@ public class FragmentHome extends Fragment {
 
     };
 
+
+    //observer que observa a porcentagem total de horas que servirá para preencher o gráfico
     Observer<Integer> porcentagemTotalDeHoras = new Observer<Integer>() {
         @Override
         public void onChanged(Integer porcentagem) {
@@ -83,7 +94,18 @@ public class FragmentHome extends Fragment {
 
     };
 
+    /*
+    observação sobre os observers acima:
 
+    cada observer desse vai receber um valor assim que ele for chamado. O resultado de algo é o valor recebido la da viewModel.
+
+    O fluxo é mais ou menos o seguinte:
+    fragment -> chama viewModel para pegar dados -> viewModel chama os metodos do firebase p/ pegar os dados -> dados são obtidos -> viewModel é avisada atraves de callbacks -> viewModel coloca o valor no liveData -> fragment que estava observando pega o novo valor do liveData
+     */
+
+
+
+    //para explicacao sobre esse metodo visite o comentario do onCreateView do FragmentBoasVindas
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -95,6 +117,8 @@ public class FragmentHome extends Fragment {
         return binding.getRoot();
     }
 
+    //para explicacao sobre esse metodo visite o comentario do onViewCreated do FragmentBoasVindas
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -104,6 +128,7 @@ public class FragmentHome extends Fragment {
         onClickListeners();
     }
 
+    //preenche o grafico de acordo com a porcentagem de horas concluidas
     private void setPorcentagemNoCircularProgressIndicator(Integer porcentagem) {
         int progresso = Math.min(100, porcentagem);
 
@@ -111,20 +136,27 @@ public class FragmentHome extends Fragment {
         binding.indicadorCircularDeModalidade.setProgress(progresso);
     }
 
+    //seta uma das textviews que fica dentro do grafico
 
     private void setarCargaTotalObtidaNaView(String cargaTotalObtida) {
         binding.cargaTotalObtida.setText(cargaTotalObtida);
     }
+
+    //seta uma das textviews que fica dentro do grafico
 
     @SuppressLint("SetTextI18n")
     private void setarCargaTotalNaView(String cargaTotal) {
         binding.cargaTotal.setText("/"+cargaTotal+"h");
     }
 
+
+    //pega o calculo de quantas horas faltam para o user completar as atividades complementares
     private void fazerOCalculoDoTotalDeHorasRestantes(List<AtividadeComplementar> atividadeComplementars) {
         mViewModel.calcularHorasRestantes(atividadeComplementars);
     }
 
+
+    //coloca as atividades complementares na recycler view
     private void colocarAtividadesNaRecyclerView(List<AtividadeComplementar> atividadeComplementars) {
         ArrayList<AtividadeComplementar> listaAdapter = new ArrayList<>();
         for (AtividadeComplementar atividade : atividadeComplementars){
@@ -148,6 +180,7 @@ public class FragmentHome extends Fragment {
 
     private void onClickListeners() {
         binding.btnMostrarChips.setOnClickListener(v->{
+            //controla a visibilidade dos Chips
             if(mViewModel.showChips){
                 binding.containerChipGroup.setVisibility(View.GONE);
                 mViewModel.showChips = false;
@@ -163,6 +196,8 @@ public class FragmentHome extends Fragment {
 
         });
 
+
+        //controla a visibilidade do grafico
         binding.btnMostrarGrafico.setOnClickListener(v->{
             if(mViewModel.showGrafico){
                 binding.containerTextoGrafico.setVisibility(View.GONE);
@@ -179,6 +214,8 @@ public class FragmentHome extends Fragment {
             }
         });
 
+
+        //listener para cada Chip. Quando clicar no chip, a lista de atividades filtrada por modalidade será exibida
         binding.chipGroup.setOnCheckedStateChangeListener(new ChipGroup.OnCheckedStateChangeListener() {
             @Override
             public void onCheckedChanged(@NonNull ChipGroup group, @NonNull List<Integer> checkedIds) {
@@ -222,6 +259,11 @@ public class FragmentHome extends Fragment {
         });
     }
 
+
+    /**
+     *
+     * a seguir alguns metodos para animação da seta de mostrar/esconder grafico/chips
+     */
     private void animarSetaGraficoParaCima(ImageButton btnMostrarGrafico) {
         btnMostrarGrafico.animate().rotationBy(180f).setDuration(50).start();
 
@@ -247,6 +289,8 @@ public class FragmentHome extends Fragment {
 
     }
 
+
+    //destruir os observers ao destruir o fragment
     @Override
     public void onDestroyView() {
         super.onDestroyView();

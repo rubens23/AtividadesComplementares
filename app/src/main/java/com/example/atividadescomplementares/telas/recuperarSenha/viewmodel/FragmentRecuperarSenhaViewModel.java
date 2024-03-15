@@ -6,12 +6,26 @@ import androidx.lifecycle.ViewModel;
 import com.example.atividadescomplementares.dados.recuperarSenha.PasswordResetCallback;
 import com.example.atividadescomplementares.dados.recuperarSenha.RecuperarSenhaFirebase;
 
+
+/**
+ * viewModel da tela de recuperar senha(trocar senha)
+ *
+ *    ------------------->     -------->
+ * tela(fragment) <---> viewModel<--->dados(classes do firebase)
+ *       <----------------     <---------
+ */
 public class FragmentRecuperarSenhaViewModel extends ViewModel {
 
+
+    //instancia da classe de acesso ao firebase
     private RecuperarSenhaFirebase recuperarSenhaFirebase = new RecuperarSenhaFirebase();
 
+
+    //livedata do resultado do envio do email de troca de senha
     public MutableLiveData<String> resultadoEnvioEmailRecuperacao = new MutableLiveData<>();
 
+
+    //metodo para enviar um email de troca de senha
     public void enviarEmailDeRecuperacaoDeSenha(String email) {
         recuperarSenhaFirebase.mandarEmailParaResetarSenha(email, new PasswordResetCallback() {
             @Override

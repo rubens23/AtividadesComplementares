@@ -9,15 +9,23 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+
+/**
+ * classe de acesso aos metodos de autenticação no firebase(login)
+ */
 public class LoginFirebase {
     private FirebaseAuth mAuth;
     private String tag = "LoginFirebase";
 
+
+    //inicialização do firebase auth para os metodos que o necessitam nessa classe
     public LoginFirebase(){
         this.mAuth = FirebaseAuth.getInstance();
 
     }
 
+
+    //função para fazer login no app
     public void fazerLogin(String email, String senha, LoginCallback loginCallback){
         mAuth.signInWithEmailAndPassword(email, senha)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -36,6 +44,8 @@ public class LoginFirebase {
                 });
     }
 
+
+    //função para fazer logout no app
     private void fazerLogout(LogoutCallback logoutCallback){
         if(mAuth.getCurrentUser() != null){
             mAuth.signOut();

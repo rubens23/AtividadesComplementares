@@ -5,6 +5,10 @@ import com.example.atividadescomplementares.dados.atividadeComplementar.Atividad
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * classe que representa as informações do usuario
+ */
 public class UserInfo {
     public String nome;
     public String email;

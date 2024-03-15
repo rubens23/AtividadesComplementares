@@ -5,6 +5,11 @@
     android:id="@+id/navigation.xml"
     app:startDestination="@id/fragmentBoasVindas">
 
+
+    <!--Esse é o grafico de navegação que vai ajudar o navController a fazer a navegação das telas no app-->
+    <!--aqui declaramos todos os fragments e ações de navegações que precisamos para fazer a navegação-->
+    <!--Para mais informações sobre como funciona a navegação procure a documentação de NavigationComponent com xml no google-->
+
     <fragment
         android:id="@+id/fragmentBoasVindas"
         android:name="com.example.atividadescomplementares.telas.boasVindas.FragmentBoasVindas"

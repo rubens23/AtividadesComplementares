@@ -1,5 +1,9 @@
 package com.example.atividadescomplementares.dados.atividadeComplementar;
 
+
+/**
+ * Classe que representa as caracteristicas de uma atividade complementar
+ */
 public class AtividadeComplementar {
     public String modalidade;
     public String atividade;
