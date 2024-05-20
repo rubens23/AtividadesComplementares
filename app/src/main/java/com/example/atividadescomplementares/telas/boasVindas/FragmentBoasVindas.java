@@ -43,18 +43,19 @@ public class FragmentBoasVindas extends Fragment {
         //init do binding desse fragment
         binding = FragmentBoasVindasBinding.inflate(inflater, container, false);
         //metodo para mudar algumas cores dependendo se o device estiver no modo claro ou escuro
-        mudarCorESSeTemaFroClaro();
+        mudarCorTemaDependendoDoTemaClaroEscuroDoDevice();
         return binding.getRoot();
     }
 
-    private void mudarCorESSeTemaFroClaro() {
+    private void mudarCorTemaDependendoDoTemaClaroEscuroDoDevice() {
         //pega qual modo esta ativado no device(claro ou escuro)
         int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
 
         //se for o modo claro, muda a cor do botao de login, se for escuro a cor permanece conforme o definido no xml
         if(currentNightMode != Configuration.UI_MODE_NIGHT_YES){
-           binding.getRoot().setBackgroundColor(Color.parseColor("#facfce"));
-           binding.loginButton.setBackgroundTintList(requireContext().getResources().getColorStateList(R.color.white));
+           //binding.getRoot().setBackgroundColor(Color.parseColor("#facfce"));
+            binding.loginButton.setBackgroundTintList(requireContext().getResources().getColorStateList(R.color.mainPink));
+           //binding.loginButton.setBackgroundTintList(requireContext().getResources().getColorStateList(R.color.white));
 
 
 

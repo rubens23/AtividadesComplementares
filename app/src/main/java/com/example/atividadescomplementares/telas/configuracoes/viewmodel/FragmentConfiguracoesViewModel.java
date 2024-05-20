@@ -88,7 +88,7 @@ public class FragmentConfiguracoesViewModel extends ViewModel {
 
 
 
-    gfhgfh
+
     public void pegarCargaTotal() {
         persistenciaFirebase.pegarCargaTotalNecessaria(new PegouCargaHorariaTotal() {
             @Override
