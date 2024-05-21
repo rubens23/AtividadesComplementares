@@ -1,5 +1,7 @@
 package com.example.atividadescomplementares.telas.home.viewmodel;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -23,7 +25,7 @@ public class FragmentHomeViewModel extends ViewModel {
 
     //'Chip' é o nome daquele item que é usado no filtro que serve para filtrar por modalidade
     //essas variaveis controlam se o grafico ou os Chips devem ser mostrados ou não
-    public boolean showChips = false;
+    public boolean showChips = true;
     public boolean showGrafico = true;
 
 
@@ -41,6 +43,7 @@ public class FragmentHomeViewModel extends ViewModel {
 
     //esse metodo pega a lista de atividades complementares
     public void pegarListaDeAtividades() {
+
         persistenciaFirebase.pegarAtividadesComplementaresPorUser(new PegouListaDeAtividadesComplementares() {
             @Override
             public void pegouLista(List<AtividadeComplementar> lista) {
@@ -72,6 +75,7 @@ public class FragmentHomeViewModel extends ViewModel {
                 cargaTotalLD.setValue(cargaTotal.toString());
                 //retornar carga total obtida(quantas horas o user ja completou)
                 cargaTotalObtida.setValue(String.valueOf(somaCargaAtualObtida));
+
                 fazerCalculoParaCircularProgressIndicator(Integer.parseInt(String.valueOf(cargaTotal)), somaCargaAtualObtida);
             }
         });

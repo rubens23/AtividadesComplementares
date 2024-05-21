@@ -139,6 +139,9 @@ public class PersistenciaFirebase {
                     if(listaAtual != null){
                         List<AtividadeComplementar> atividadesComplementares = new ArrayList<>(listaAtual);
                         pegouLista.pegouLista(atividadesComplementares);
+                    }else{
+                        pegouLista.pegouLista(new ArrayList<>());
+
                     }
 
 

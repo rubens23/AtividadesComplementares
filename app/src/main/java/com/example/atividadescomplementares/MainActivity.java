@@ -9,13 +9,16 @@ import androidx.navigation.NavDestination;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 
 import com.example.atividadescomplementares.databinding.ActivityMainBinding;
+import com.example.atividadescomplementares.telas.login.FragmentLoginDirections;
 import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
@@ -81,6 +84,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void configNavigation() {
+        //vê se já tem um user logado, se ja tiver a navegação inicial terá uma rota diferente
+        boolean iniciarComHomeScreen = verSeNavegacaoInicialSeraHomeScreen();
+
         //configura o navController para habilitar a navegação
         //é importante falar tambem que é feita uma vinculação da barra de navegação inferior e o navController para conseguir navegar usando
         //a barra inferior
@@ -89,6 +95,10 @@ public class MainActivity extends AppCompatActivity {
             navController = navHostFragment.getNavController();
 
             NavigationUI.setupWithNavController(binding.bottomNavigationView, navController);
+
+            if (iniciarComHomeScreen){
+                navController.navigate(R.id.paginaInicial);
+            }
 
             navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
                 @Override
@@ -128,6 +138,21 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    private boolean verSeNavegacaoInicialSeraHomeScreen() {
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        if(bundle != null){
+            boolean isLoggedIn = bundle.getBoolean("isLoggedIn", false);
+            if(isLoggedIn){
+                return true;
+            }else {
+                return false;
+            }
+        }else {
+            return false;
+        }
     }
 
 

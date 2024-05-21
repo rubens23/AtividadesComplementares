@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -125,7 +126,20 @@ public class FragmentHome extends Fragment {
 
         initObservers();
         mViewModel.pegarListaDeAtividades();
+        fazerSelecaoInicialDoChip();
         onClickListeners();
+    }
+
+    private void fazerSelecaoInicialDoChip() {
+        binding.chipTodos.setChecked(true);
+        binding.containerChipGroup.post(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        binding.containerChipGroup.smoothScrollTo(binding.chipTodos.getLeft(), binding.chipTodos.getTop());
+                    }
+                }
+        );
     }
 
     //preenche o grafico de acordo com a porcentagem de horas concluidas
