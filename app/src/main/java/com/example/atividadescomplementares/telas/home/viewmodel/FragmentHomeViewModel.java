@@ -35,10 +35,12 @@ public class FragmentHomeViewModel extends ViewModel {
     public MutableLiveData<String> cargaTotalLD = new MutableLiveData<>();
     public MutableLiveData<String> cargaTotalObtida = new MutableLiveData<>();
     public MutableLiveData<Integer> porcentagemHorasConcluidas = new MutableLiveData<>();
+    public boolean completouHorasComplementares = false;
 
 
     //instancia de uma classe com metodos de acesso ao firebase
     private PersistenciaFirebase persistenciaFirebase = new PersistenciaFirebase();
+    public Integer mCargaTotal = 0;
 
 
     //esse metodo pega a lista de atividades complementares
@@ -73,6 +75,7 @@ public class FragmentHomeViewModel extends ViewModel {
                 }
                 //retorna carga total necessaria
                 cargaTotalLD.setValue(cargaTotal.toString());
+                mCargaTotal = cargaTotal;
                 //retornar carga total obtida(quantas horas o user ja completou)
                 cargaTotalObtida.setValue(String.valueOf(somaCargaAtualObtida));
 
@@ -134,5 +137,32 @@ public class FragmentHomeViewModel extends ViewModel {
 
             }
         });
+    }
+
+    public Integer tryParseInt(String str) {
+        try{
+            return Integer.parseInt(str);
+        }catch (NumberFormatException e){
+            return null;
+        }
+    }
+
+
+    public boolean checarSeJaAtingiuTotalDeCargaHoraria(Integer validNumber) {
+
+        if(mCargaTotal > 0){
+            if(validNumber >= mCargaTotal){
+
+                return true;
+            }else{
+
+                completouHorasComplementares = false;
+                return false;
+            }
+        }else{
+            return false;
+        }
+
+
     }
 }

@@ -153,7 +153,24 @@ public class FragmentHome extends Fragment {
     //seta uma das textviews que fica dentro do grafico
 
     private void setarCargaTotalObtidaNaView(String cargaTotalObtida) {
-        binding.cargaTotalObtida.setText(cargaTotalObtida);
+        Integer validNumber = mViewModel.tryParseInt(cargaTotalObtida);
+        if(validNumber != null){
+            boolean jaAtingiuTotalDeCargaHoraria = mViewModel.checarSeJaAtingiuTotalDeCargaHoraria(validNumber);
+            if(!jaAtingiuTotalDeCargaHoraria){
+                binding.cargaTotalObtida.setText(cargaTotalObtida);
+                mViewModel.completouHorasComplementares = false;
+                showCompletouGrafico(false);
+            }else{
+
+                if(mViewModel.mCargaTotal > 0){
+                    binding.cargaTotalObtida.setText(mViewModel.mCargaTotal.toString());
+                    mViewModel.completouHorasComplementares = true;
+                    showCompletouGrafico(true);
+                }
+            }
+
+        }
+
     }
 
     //seta uma das textviews que fica dentro do grafico
@@ -219,12 +236,15 @@ public class FragmentHome extends Fragment {
                 binding.labelGrafico.setVisibility(View.INVISIBLE);
                 mViewModel.showGrafico = false;
                 animarSetaGraficoParaBaixo(binding.btnMostrarGrafico);
+                showCompletouGrafico(false);
+
             }else{
                 binding.containerTextoGrafico.setVisibility(View.VISIBLE);
                 binding.indicadorCircularDeModalidade.setVisibility(View.VISIBLE);
                 binding.labelGrafico.setVisibility(View.VISIBLE);
                 mViewModel.showGrafico = true;
                 animarSetaGraficoParaCima(binding.btnMostrarGrafico);
+                showCompletouGrafico(true);
             }
         });
 
@@ -236,41 +256,66 @@ public class FragmentHome extends Fragment {
 
                 if(checkedIds.size() == 0){
                     mViewModel.pegarListaDeAtividadesPorModalidade("todos");
+                    mudarTextViewCategoria("TOTAL");
+
 
 
                 }else {
                     if(checkedIds.get(0) == binding.chipEnsino.getId()){
                         mViewModel.pegarListaDeAtividadesPorModalidade("ensino");
+                        mudarTextViewCategoria("Ensino");
 
                     }
                     if(checkedIds.get(0) == binding.chipPesquisa.getId()){
                         mViewModel.pegarListaDeAtividadesPorModalidade("pesquisa");
+                        mudarTextViewCategoria("Pesquisa");
 
 
                     }
                     if(checkedIds.get(0) == binding.chipExtensao.getId()){
                         mViewModel.pegarListaDeAtividadesPorModalidade("extensao");
+                        mudarTextViewCategoria("Extensão");
 
 
                     }
                     if(checkedIds.get(0) == binding.chipEsporteArteCultura.getId()){
                         mViewModel.pegarListaDeAtividadesPorModalidade("esporte");
+                        mudarTextViewCategoria("Esporte");
 
 
                     }
                     if(checkedIds.get(0) == binding.chipCidadania.getId()){
                         mViewModel.pegarListaDeAtividadesPorModalidade("cidadania");
+                        mudarTextViewCategoria("Cidadania");
 
 
                     }
                     if(checkedIds.get(0) == binding.chipTodos.getId()){
                         mViewModel.pegarListaDeAtividadesPorModalidade("todos");
+                        mudarTextViewCategoria("TOTAL");
 
 
                     }
                 }
             }
         });
+    }
+
+    private void mudarTextViewCategoria(String str) {
+        binding.labelGrafico.setText(str);
+    }
+
+    private void showCompletouGrafico(boolean mostrar) {
+        if(mViewModel.completouHorasComplementares){
+            if(mostrar){
+                binding.cvCompletouAtividades.setVisibility(View.VISIBLE);
+            }else {
+                binding.cvCompletouAtividades.setVisibility(View.GONE);
+            }
+        }else{
+            binding.cvCompletouAtividades.setVisibility(View.GONE);
+
+        }
     }
 
 

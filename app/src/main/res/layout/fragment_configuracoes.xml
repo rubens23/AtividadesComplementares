@@ -57,6 +57,7 @@
                 android:drawablePadding="5dp"
                 android:paddingStart="10dp"
                 android:maxLines="1"
+                android:inputType="number"
                 app:layout_constraintTop_toTopOf="parent"
                 android:backgroundTint="@color/editTextLine"
                 />
