@@ -43,6 +43,7 @@ public class FragmentHomeViewModel extends ViewModel {
     public Integer mCargaTotal = 0;
 
 
+
     //esse metodo pega a lista de atividades complementares
     public void pegarListaDeAtividades() {
 

@@ -34,6 +34,8 @@ public class FragmentHome extends Fragment {
     //instancia do binding
     private FragmentHomeBinding binding;
 
+
+    //fazer o codigo que mostre a quantidade de horas obtidas por modalidade. O total de horas obtidas só será mostrado quando o user escolher a categoria todas
     //observer que observa o resultado da lista de atividades complementares
     Observer<List<AtividadeComplementar>> resultadoListaDeAtividades = new Observer<List<AtividadeComplementar>>() {
         @Override
@@ -50,6 +52,7 @@ public class FragmentHome extends Fragment {
     Observer<List<AtividadeComplementar>> resultadoListaDeAtividadesPorModalidade = new Observer<List<AtividadeComplementar>>() {
         @Override
         public void onChanged(List<AtividadeComplementar> atividadeComplementars) {
+            fazerOCalculoDoTotalDeHorasRestantes(atividadeComplementars);
             colocarAtividadesNaRecyclerView(atividadeComplementars);
 
         }
