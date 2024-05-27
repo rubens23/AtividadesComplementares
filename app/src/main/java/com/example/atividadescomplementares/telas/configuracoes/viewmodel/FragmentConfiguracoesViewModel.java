@@ -1,11 +1,17 @@
 package com.example.atividadescomplementares.telas.configuracoes.viewmodel;
 
+import android.app.Application;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.atividadescomplementares.dados.atividadeComplementar.PersistenciaFirebase;
 import com.example.atividadescomplementares.dados.atividadeComplementar.SalvouNovaCargaHoraria;
 import com.example.atividadescomplementares.dados.cadastro.MudouEmail;
+import com.example.atividadescomplementares.dados.login.LoginFirebase;
+import com.example.atividadescomplementares.dados.login.LogoutCallback;
 import com.example.atividadescomplementares.dados.recuperarSenha.PasswordResetCallback;
 import com.example.atividadescomplementares.dados.recuperarSenha.RecuperarSenhaFirebase;
 import com.example.atividadescomplementares.dados.user.PegouCargaHorariaTotal;
@@ -21,7 +27,7 @@ import java.util.Objects;
  * a camada de dados, quando as operações são concluidas, a tela fica sabendo
  * através dos observaveis(objetos do tipo LiveData)
  */
-public class FragmentConfiguracoesViewModel extends ViewModel {
+public class FragmentConfiguracoesViewModel extends AndroidViewModel {
 
     //as proximas duas variaveis representam o valor do email e carga que o usuario já tem cadastrado
     //elas são inicializadas com empty string e 0 porque esses valores cadastrados ainda não foram obtidos
@@ -35,6 +41,9 @@ public class FragmentConfiguracoesViewModel extends ViewModel {
 
     //objeto liveData que pode ser observado pela tela(fragment).
     public MutableLiveData<Integer> cargaTotalNecessaria = new MutableLiveData<>();
+
+    //ao entrar na tela de configurações de novo ver se o livedata passa o valor para o observer e faz o logout
+    public MutableLiveData<String> resultadoLogout = new MutableLiveData<>();
 
 
     //instancia para acesso aos metodos do firebase
@@ -62,6 +71,9 @@ public class FragmentConfiguracoesViewModel extends ViewModel {
     public MutableLiveData<String> resultadoSaveNovaCargaHoraria = new MutableLiveData<>();
 
 
+    public LoginFirebase loginFirebase = new LoginFirebase(getApplication());
+
+
     /**
      * uma explicação melhor para esses objetos liveData:
      *
@@ -85,8 +97,9 @@ public class FragmentConfiguracoesViewModel extends ViewModel {
     public boolean podeMostrarSnackDeSaveDeNovoEmail = false;
     public boolean podeMostrarSnackDeSaveDeNovaCargaHoraria = false;
 
-
-
+    public FragmentConfiguracoesViewModel(@NonNull Application application) {
+        super(application);
+    }
 
 
     public void pegarCargaTotal() {
@@ -165,5 +178,20 @@ public class FragmentConfiguracoesViewModel extends ViewModel {
             }
         });
 
+    }
+
+    public void deslogar() {
+        loginFirebase.fazerLogout(new LogoutCallback() {
+            @Override
+            public void onLogout(boolean deslogou) {
+                if(deslogou){
+                    //fechar o app
+                    resultadoLogout.setValue("deslogou");
+                }else{
+                    //falha no logout
+                    resultadoLogout.setValue("falha no logout");
+                }
+            }
+        });
     }
 }

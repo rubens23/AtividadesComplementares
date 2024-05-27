@@ -10,6 +10,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.text.InputType;
 import android.view.LayoutInflater;
@@ -21,6 +22,8 @@ import com.example.atividadescomplementares.R;
 import com.example.atividadescomplementares.databinding.FragmentConfiguracoesBinding;
 import com.example.atividadescomplementares.telas.configuracoes.viewmodel.FragmentConfiguracoesViewModel;
 import com.google.android.material.snackbar.Snackbar;
+
+import java.util.Objects;
 
 public class FragmentConfiguracoes extends Fragment {
 
@@ -56,6 +59,17 @@ public class FragmentConfiguracoes extends Fragment {
         }
     } ;
 
+    Observer<String> resultadoLogout = new Observer<String>(){
+
+        @Override
+        public void onChanged(String s) {
+            if(Objects.equals(s, "deslogou")){
+                Navigation.findNavController(requireView()).navigate(R.id.fragmentLogin);
+            }
+
+        }
+    };
+
 
     //observer que observa o resultado do save do novoEmail(novo email escolhido na configuração)
     Observer<String> resultadoSaveNovoEmail = new Observer<String>() {
@@ -65,6 +79,8 @@ public class FragmentConfiguracoes extends Fragment {
                 showSnackbar(s);
                 mViewModel.podeMostrarSnackDeSaveDeNovoEmail = false;
 
+            }else {
+                showSnackbar("ocorreu um erro ao tentar sair do app");
             }
 
         }
@@ -144,6 +160,10 @@ public class FragmentConfiguracoes extends Fragment {
 
 
         });
+
+        binding.btnLogout.setOnClickListener(v->{
+            mViewModel.deslogar();
+        });
     }
 
     private void mostrarDialogDeReautenticacao(String emailNovo) {
@@ -188,6 +208,7 @@ public class FragmentConfiguracoes extends Fragment {
         mViewModel.resultadoEnvioEmailRecuperacao.observe(requireActivity(), resultadoEmailRecuperacao);
         mViewModel.resultadoSaveNovoEmail.observe(requireActivity(), resultadoSaveNovoEmail);
         mViewModel.resultadoSaveNovaCargaHoraria.observe(requireActivity(), resultadoSaveNovaCargaHoraria);
+        mViewModel.resultadoLogout.observe(requireActivity(), resultadoLogout);
 
     }
 
@@ -232,6 +253,7 @@ public class FragmentConfiguracoes extends Fragment {
         mViewModel.resultadoEnvioEmailRecuperacao.removeObserver(resultadoEmailRecuperacao);
         mViewModel.resultadoSaveNovoEmail.removeObserver(resultadoSaveNovoEmail);
         mViewModel.resultadoSaveNovaCargaHoraria.removeObserver(resultadoSaveNovaCargaHoraria);
+        mViewModel.resultadoLogout.removeObserver(resultadoLogout);
 
     }
 }

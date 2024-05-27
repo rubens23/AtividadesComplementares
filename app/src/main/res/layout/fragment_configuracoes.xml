@@ -161,8 +161,30 @@
             android:elevation="8dp"
             app:cornerRadius="6dp"/>
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnLogout"
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="8dp"
+            app:cornerRadius="6dp"
+            app:iconSize="38dp"
+            android:padding="10dp"
+            app:iconTint="@color/saveButtonColor"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:backgroundTint="@color/mainPink"
+            app:icon="@drawable/baseline_logout_24"
+            android:layout_gravity="end"
+            android:layout_marginHorizontal="40dp"
+            android:layout_marginVertical="60dp"/>
+
 
     </LinearLayout>
+
+
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

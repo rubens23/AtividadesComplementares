@@ -97,6 +97,7 @@ public class FragmentRecuperarSenha extends Fragment {
     }
 
 
+
     //destroi os observers assim que o fragment for destruído
     @Override
     public void onDestroyView() {

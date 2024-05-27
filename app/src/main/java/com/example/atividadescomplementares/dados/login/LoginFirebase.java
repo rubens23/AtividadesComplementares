@@ -72,7 +72,7 @@ public class LoginFirebase {
 
 
     //função para fazer logout no app
-    private void fazerLogout(LogoutCallback logoutCallback){
+    public void fazerLogout(LogoutCallback logoutCallback){
         if(mAuth.getCurrentUser() != null){
             mAuth.signOut();
             desfazerPersistenciaDeLogin();
