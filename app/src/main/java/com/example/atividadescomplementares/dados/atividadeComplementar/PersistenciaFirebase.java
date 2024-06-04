@@ -24,6 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -73,29 +74,66 @@ public class PersistenciaFirebase {
 
     //função para salvar uma nova atividade complementar
     public void salvarNovaAtividadeComplementar(AtividadeComplementar atividadeComplementar, SalvouAtividadeCallback salvouAtividadeCallback) {
+        Log.d("monitorandoSave", "salvarNovaAtividadeComplementar eu to aqui dentro do método");
+
         if (FirebaseAuth.getInstance().getCurrentUser().getUid() != null) {
             DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
             userRef.child("atividadesComplementares").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    GenericTypeIndicator<List<AtividadeComplementar>> genericTypeIndicator = new GenericTypeIndicator<List<AtividadeComplementar>>() {
-                    };
-                    List<AtividadeComplementar> listaAtual = snapshot.getValue(genericTypeIndicator);
 
-                    List<AtividadeComplementar> atividadesComplementares;
+                    List<AtividadeComplementar> atividadesComplementares = new ArrayList<>();
 
-                    if(listaAtual != null){
-                        atividadesComplementares = new ArrayList<>(listaAtual);
 
-                    }else{
-                        atividadesComplementares = new ArrayList<>();
+
+                    if(snapshot.exists()){
+                        Log.d("monitorandoSave", "salvarNovaAtividadeComplementar snapshot existe");
+
+                        if(snapshot.getValue() instanceof List){
+                            Log.d("monitorandoSave", "salvarNovaAtividadeComplementar snapshot é instancia de lista");
+
+                            GenericTypeIndicator<List<AtividadeComplementar>> genericTypeIndicator = new GenericTypeIndicator<List<AtividadeComplementar>>() {
+                            };
+                            List<AtividadeComplementar> listaAtual = snapshot.getValue(genericTypeIndicator);
+                            if(listaAtual != null){
+                                atividadesComplementares.addAll(listaAtual);
+
+                            }
+                            Log.d("monitorandoSave", "salvarNovaAtividadeComplementar adicionei snapshot à lista de atividades complementares");
+
+                            atividadesComplementares.add(atividadeComplementar);
+
+
+                        }else if(snapshot.getValue() instanceof HashMap){
+                            Log.d("monitorandoSave", "salvarNovaAtividadeComplementar snapshot é instancia de hashmap");
+
+                            AtividadeComplementar atividade = snapshot.getValue(AtividadeComplementar.class);
+                            if(atividade != null){
+                                atividadesComplementares.add(atividade);
+                                Log.d("monitorandoSave", "salvarNovaAtividadeComplementar adicionei o snapshot à lista de atividades");
+
+                                atividadesComplementares.add(atividadeComplementar);
+
+                            }else {
+                                Log.d("monitorandoSave", "salvarNovaAtividadeComplementar é um hashmap e a atividade é nula");
+
+                            }
+
+                        }
+                    }else {
+                        //não tem nenhuma atividade salva no firebase
+                        atividadesComplementares.add(atividadeComplementar);
+
 
                     }
 
 
 
-                    atividadesComplementares.add(atividadeComplementar);
+
+
+
+
 
                     userRef.child("atividadesComplementares").setValue(atividadesComplementares).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -126,14 +164,28 @@ public class PersistenciaFirebase {
 
     //função para pegar as atividades complementares que o user já tem cadastradas
     public void pegarAtividadesComplementaresPorUser(PegouListaDeAtividadesComplementares pegouLista) {
+        Log.d("FirebaseDebug", "entrei aqui no metodo pegarAtividadesPorUser");
+
         if (FirebaseAuth.getInstance().getCurrentUser().getUid() != null) {
             DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
             userRef.child("atividadesComplementares").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    GenericTypeIndicator<List<AtividadeComplementar>> genericTypeIndicator = new GenericTypeIndicator<List<AtividadeComplementar>>() {};
-                    List<AtividadeComplementar> listaAtual = snapshot.getValue(genericTypeIndicator);
+                    Log.d("FirebaseDebug", "DataSnapshot value aqui no pegarAtividadesComplementaresPorUser: " + snapshot.getValue());
+
+                    List<AtividadeComplementar> listaAtual = new ArrayList<>();
+                    if(snapshot.getValue() instanceof List){
+                        GenericTypeIndicator<List<AtividadeComplementar>> genericTypeIndicator = new GenericTypeIndicator<List<AtividadeComplementar>>() {};
+                        listaAtual = snapshot.getValue(genericTypeIndicator);
+
+                    } else if (snapshot.getValue() instanceof HashMap) {
+                        AtividadeComplementar atividade = snapshot.getValue(AtividadeComplementar.class);
+                        if (atividade != null) {
+                            listaAtual.add(atividade);
+                        }
+
+                    }
 
 
                     if(listaAtual != null){
@@ -163,32 +215,68 @@ public class PersistenciaFirebase {
 
     //função para pegar as atividades complementares do user por modalidade(Ensino, Pesquisa etc)
     public void pegarAtividadesComplementaresPorUserEModalidade(String modalidadeEscolhida, PegouListaDeAtividadesComplementares pegouLista) {
+        Log.d("FirebaseDebug", "entrei aqui no metodo que vai pegar a lista de atividades");
+
         if (FirebaseAuth.getInstance().getCurrentUser().getUid() != null) {
             DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
             userRef.child("atividadesComplementares").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    GenericTypeIndicator<List<AtividadeComplementar>> genericTypeIndicator = new GenericTypeIndicator<List<AtividadeComplementar>>() {};
-                    List<AtividadeComplementar> listaAtual = snapshot.getValue(genericTypeIndicator);
+
+                    Log.d("FirebaseDebug", "DataSnapshot value: " + snapshot.getValue());
                     ArrayList<AtividadeComplementar> listaPorModalidade = new ArrayList<>();
 
 
-                    if(listaAtual != null){
-                        List<AtividadeComplementar> atividadesComplementares = new ArrayList<>(listaAtual);
-                        for (AtividadeComplementar atividade: atividadesComplementares){
-                            if(Objects.equals(atividade.modalidade, modalidadeEscolhida)){
-                                listaPorModalidade.add(atividade);
 
-                            }else {
-                                if(modalidadeEscolhida == "todos"){
-                                    listaPorModalidade.add(atividade);
+                    if(snapshot.exists()){
+                        if(snapshot.getValue() instanceof List){
+                            GenericTypeIndicator<List<AtividadeComplementar>> genericTypeIndicator = new GenericTypeIndicator<List<AtividadeComplementar>>() {};
+                            List<AtividadeComplementar> listaAtual = snapshot.getValue(genericTypeIndicator);
+
+
+                            if(listaAtual != null){
+                                List<AtividadeComplementar> atividadesComplementares = new ArrayList<>(listaAtual);
+                                for (AtividadeComplementar atividade: atividadesComplementares){
+                                    if(atividade != null){
+                                        if(Objects.equals(atividade.modalidade, modalidadeEscolhida)){
+                                            listaPorModalidade.add(atividade);
+
+                                        }else {
+                                            if(modalidadeEscolhida == "todos"){
+                                                listaPorModalidade.add(atividade);
+
+                                            }
+                                        }
+                                    }
+
+
 
                                 }
+                                pegouLista.pegouLista(listaPorModalidade);
                             }
+
+                        } else if (snapshot.getValue() instanceof HashMap) {
+                            AtividadeComplementar atividade = snapshot.getValue(AtividadeComplementar.class);
+                            if(atividade != null){
+                                if(Objects.equals(atividade.modalidade, modalidadeEscolhida)){
+                                    listaPorModalidade.add(atividade);
+
+                                }else {
+                                    if(modalidadeEscolhida == "todos"){
+                                        listaPorModalidade.add(atividade);
+
+                                    }
+                                }
+                            }
+
+
+
+
+
                         }
-                        pegouLista.pegouLista(listaPorModalidade);
                     }
+
 
 
 
@@ -338,6 +426,87 @@ public class PersistenciaFirebase {
 
 
 
+        }
+    }
+
+
+
+    public void alterarAtividadeComplementar(AtividadeComplementar atividadeComplementarAtualizada, AtualizouAtividadeComplementar atualizouAtividadeComplementar){
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        if(uid != null){
+            DatabaseReference atividadesComplementaresRef = FirebaseDatabase.getInstance().getReference("users").child(uid).child("atividadesComplementares");
+
+            atividadesComplementaresRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    boolean found = false;
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        AtividadeComplementar atividade = snapshot.getValue(AtividadeComplementar.class);
+                        if (atividade != null && atividade.idAtividade.equals(atividadeComplementarAtualizada.idAtividade)) {
+                            String key = snapshot.getKey();
+                            if (key != null) {
+                                atividadesComplementaresRef.child(key).setValue(atividadeComplementarAtualizada).addOnCompleteListener(task -> {
+                                    if (task.isSuccessful()) {
+                                        atualizouAtividadeComplementar.atualizouAtividadeComplementar(true);
+                                    } else {
+                                        atualizouAtividadeComplementar.atualizouAtividadeComplementar(false);
+                                    }
+                                });
+                                found = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (!found) {
+                        atualizouAtividadeComplementar.atualizouAtividadeComplementar(false);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    atualizouAtividadeComplementar.atualizouAtividadeComplementar(false);
+                }
+            });
+        }
+    }
+
+
+    public void excluirAtividadeComplementar(AtividadeComplementar atividadeComplementar, ExcluiuAtividadeComplementar excluiuAtividadeComplementar) {
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        if (uid != null) {
+            DatabaseReference atividadesComplementaresRef = FirebaseDatabase.getInstance().getReference("users").child(uid).child("atividadesComplementares");
+
+            atividadesComplementaresRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    boolean found = false;
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        AtividadeComplementar atividade = snapshot.getValue(AtividadeComplementar.class);
+                        if (atividade != null && atividade.idAtividade.equals(atividadeComplementar.idAtividade)) {
+                            String key = snapshot.getKey();
+                            if (key != null) {
+                                atividadesComplementaresRef.child(key).removeValue().addOnCompleteListener(task -> {
+                                    if (task.isSuccessful()) {
+                                        excluiuAtividadeComplementar.excluiuAtividadeComplementar(true);
+                                    } else {
+                                        excluiuAtividadeComplementar.excluiuAtividadeComplementar(false);
+                                    }
+                                });
+                                found = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (!found) {
+                        excluiuAtividadeComplementar.excluiuAtividadeComplementar(false);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    excluiuAtividadeComplementar.excluiuAtividadeComplementar(false);
+                }
+            });
         }
     }
 }

@@ -4,28 +4,38 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.example.atividadescomplementares.dados.atividadeComplementar.AtividadeComplementar;
+import com.example.atividadescomplementares.dados.atividadeComplementar.SerializadorAtividadeComplementar;
 import com.example.atividadescomplementares.databinding.FragmentHomeBinding;
+import com.example.atividadescomplementares.telas.home.interfaces.ClickEditarAtividade;
 import com.example.atividadescomplementares.telas.home.viewmodel.FragmentHomeViewModel;
+import com.example.atividadescomplementares.telas.login.FragmentLoginDirections;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FragmentHome extends Fragment {
+public class FragmentHome extends Fragment implements ClickEditarAtividade {
 
 
     //instancia da viewModel
@@ -33,6 +43,28 @@ public class FragmentHome extends Fragment {
 
     //instancia do binding
     private FragmentHomeBinding binding;
+
+    private AtividadeAdapter adapter;
+
+
+    private ItemTouchHelper itemTouchHelper;
+
+
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT){
+
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            mostrarAlertDialogParaConfirmarAExclusao(viewHolder, direction);
+
+        }
+    };
+
+
 
 
     //fazer o codigo que mostre a quantidade de horas obtidas por modalidade. O total de horas obtidas só será mostrado quando o user escolher a categoria todas
@@ -98,6 +130,29 @@ public class FragmentHome extends Fragment {
 
     };
 
+    //ao excluir uma atividade atualizar o grafico levando em consideracao categoria escolhida .
+    //todo resolver o bug: excluir atividade complementar > ir para tela de formulário > e voltar para home(isso esta crashando o aplicativo)
+
+    //Observer para observar a exclusão da atividade complementar
+    Observer<String> exclusaoAtividadeComplementar = new Observer<String>() {
+        @Override
+        public void onChanged(String s) {
+            if(mViewModel.podeMostrarResultSnackbar){
+                if(s.equals("excluiu")){
+                    fazerOCalculoDoTotalDeHorasRestantes(adapter.listaDeAtividades);
+                    showSnackbar("Atividade complementar excluída com sucesso!");
+                }else{
+                    showSnackbar("Houve uma falha na exclusão da atividade");
+
+                }
+                mViewModel.podeMostrarResultSnackbar = false;
+
+            }
+
+        }
+    };
+
+
     /*
     observação sobre os observers acima:
 
@@ -131,6 +186,9 @@ public class FragmentHome extends Fragment {
         mViewModel.pegarListaDeAtividades();
         fazerSelecaoInicialDoChip();
         onClickListeners();
+        itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(binding.rvAtividadesComplementares);
+
     }
 
     private void fazerSelecaoInicialDoChip() {
@@ -151,6 +209,56 @@ public class FragmentHome extends Fragment {
 
 
         binding.indicadorCircularDeModalidade.setProgress(progresso);
+    }
+
+    private void mostrarAlertDialogParaConfirmarAExclusao(RecyclerView.ViewHolder viewHolder, int direction) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(requireContext());
+
+        //titulo e mensagem do alertDialog
+        alertDialogBuilder.setTitle("Confirmar Exclusão");
+        alertDialogBuilder.setMessage("Você tem certeza que deseja excluir essa atividade?");
+
+        //Definir um botão positivo que confirma a exclusão
+        alertDialogBuilder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                excluirAtividade(viewHolder);
+            }
+        });
+
+        //Definir um botão negativo que cancela a exclusão
+        alertDialogBuilder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                adapter.notifyItemChanged(viewHolder.getAdapterPosition());
+
+
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+    private void excluirAtividade(RecyclerView.ViewHolder viewHolder) {
+        AtividadeComplementar atividadeComplementar = adapter.listaDeAtividades.get(viewHolder.getPosition());
+        excluirAtividadeDaPersistencia(atividadeComplementar);
+        adapter.listaDeAtividades.remove(viewHolder.getAdapterPosition());
+        adapter.notifyItemRemoved(viewHolder.getAdapterPosition());
+
+    }
+
+    private void excluirAtividadeDaPersistencia(AtividadeComplementar atividadeComplementar) {
+        Log.d("monitorandoExclusao", "to aqui no metodo excluir atividade");
+        mViewModel.excluirAtividadeComplementar(atividadeComplementar);
+    }
+
+
+    private void showSnackbar(String s) {
+        Snackbar.make(getActivity().findViewById(android.R.id.content), s, Snackbar.LENGTH_LONG).show();
+
+
     }
 
     //seta uma das textviews que fica dentro do grafico
@@ -198,7 +306,7 @@ public class FragmentHome extends Fragment {
                 listaAdapter.add(atividade);
             }
         }
-        AtividadeAdapter adapter = new AtividadeAdapter(listaAdapter);
+        adapter = new AtividadeAdapter(listaAdapter, this);
         binding.rvAtividadesComplementares.setAdapter(adapter);
     }
 
@@ -210,6 +318,7 @@ public class FragmentHome extends Fragment {
         mViewModel.cargaTotalObtida.observe(requireActivity(), resultadoCargaTotalObtida);
         mViewModel.porcentagemHorasConcluidas.observe(requireActivity(), porcentagemTotalDeHoras);
         mViewModel.listaDeAtividadesPorModalidade.observe(requireActivity(), resultadoListaDeAtividadesPorModalidade);
+        mViewModel.resultadoExclusaoAtividadeComplementar.observe(requireActivity(), exclusaoAtividadeComplementar);
     }
 
     private void onClickListeners() {
@@ -362,6 +471,14 @@ public class FragmentHome extends Fragment {
         mViewModel.cargaTotalObtida.removeObserver(resultadoCargaTotalObtida);
         mViewModel.porcentagemHorasConcluidas.removeObserver(porcentagemTotalDeHoras);
         mViewModel.listaDeAtividadesPorModalidade.removeObserver(resultadoListaDeAtividadesPorModalidade);
+        mViewModel.resultadoExclusaoAtividadeComplementar.removeObserver(exclusaoAtividadeComplementar);
+
+    }
+
+    @Override
+    public void clickEditarAtividade(AtividadeComplementar atividadeComplementar) {
+        String atividadeSerializada = SerializadorAtividadeComplementar.serializeAtividade(atividadeComplementar);
+        Navigation.findNavController(requireView()).navigate(FragmentHomeDirections.actionPaginaInicialToFragmentEditarAtividadeComplementar(atividadeSerializada));
 
     }
 }

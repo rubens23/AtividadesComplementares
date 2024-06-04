@@ -14,6 +14,7 @@
     <color name="bottomNavigationColor">#FFFFFF</color>
     <color name="statusBarColor1">#FFFFFF</color>
     <color name="itemTextColor">#6A6A6A</color>
+    <color name="itemTextColorDarker">#373737</color>
     <color name="arrowColor">#000000</color>
     <color name="saveButtonColor">#000000</color>
 

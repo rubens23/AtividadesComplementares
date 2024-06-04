@@ -51,23 +51,52 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:text="DIO"
-                android:textColor="@color/itemTextColor"
+                android:textColor="@color/itemTextColorDarker"
                 android:paddingHorizontal="20dp"
                 android:textSize="@dimen/largeText"/>
 
-            <TextView
-                android:id="@+id/cargaModalidade"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="100h"
-                android:textAlignment="textEnd"
-                android:textStyle="bold"
-                android:textColor="@color/itemTextColor"
-                android:paddingTop="20dp"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:paddingBottom="20dp"
-                android:textSize="@dimen/largeText"/>
+                >
+
+
+                <ImageButton
+                    android:id="@+id/btnEditarAtividade"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/baseline_edit_24"
+                    android:paddingHorizontal="40dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/cargaModalidade"
+                    app:layout_constraintBottom_toBottomOf="@id/cargaModalidade"
+                    app:tint="@color/arrowColor"
+                    android:background="#00000000"
+                    />
+
+                <TextView
+                    android:id="@+id/cargaModalidade"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    tools:text="100h"
+                    android:textAlignment="textEnd"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/btnEditarAtividade"
+                    android:textColor="@color/itemTextColor"
+                    android:paddingTop="20dp"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:paddingBottom="20dp"
+                    android:textSize="@dimen/largeText"/>
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
         </LinearLayout>
 

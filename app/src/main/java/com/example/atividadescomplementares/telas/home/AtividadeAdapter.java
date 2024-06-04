@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.atividadescomplementares.dados.atividadeComplementar.AtividadeComplementar;
 import com.example.atividadescomplementares.databinding.ItemModalidadeBinding;
+import com.example.atividadescomplementares.telas.home.interfaces.ClickEditarAtividade;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,10 +29,13 @@ import java.util.List;
 public class AtividadeAdapter extends RecyclerView.Adapter<AtividadeAdapter.ViewHolder> {
 
     //lista que sera mostrada na tela
-    private List<AtividadeComplementar> listaDeAtividades;
+    List<AtividadeComplementar> listaDeAtividades;
 
-    public AtividadeAdapter(List<AtividadeComplementar> listaDeAtividades) {
+    private ClickEditarAtividade cliqueEditarAtividade;
+
+    public AtividadeAdapter(List<AtividadeComplementar> listaDeAtividades, ClickEditarAtividade interfaceClique) {
         this.listaDeAtividades = listaDeAtividades;
+        this.cliqueEditarAtividade = interfaceClique;
     }
 
 
@@ -73,6 +77,10 @@ public class AtividadeAdapter extends RecyclerView.Adapter<AtividadeAdapter.View
                 binding.descricao.setText(atividadeComplementar.descricaoAtividade);
                 binding.local.setText(atividadeComplementar.local);
                 binding.cargaModalidade.setText(atividadeComplementar.cargaHoraria+"h");
+
+                binding.btnEditarAtividade.setOnClickListener(v->{
+                    cliqueEditarAtividade.clickEditarAtividade(atividadeComplementar);
+                });
 
 
 

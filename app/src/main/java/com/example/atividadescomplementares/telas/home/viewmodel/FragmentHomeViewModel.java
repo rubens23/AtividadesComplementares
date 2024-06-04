@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.atividadescomplementares.R;
 import com.example.atividadescomplementares.dados.atividadeComplementar.AtividadeComplementar;
+import com.example.atividadescomplementares.dados.atividadeComplementar.ExcluiuAtividadeComplementar;
 import com.example.atividadescomplementares.dados.atividadeComplementar.PegouListaDeAtividadesComplementares;
 import com.example.atividadescomplementares.dados.atividadeComplementar.PersistenciaFirebase;
 import com.example.atividadescomplementares.dados.user.PegouCargaHorariaTotal;
@@ -28,6 +29,8 @@ public class FragmentHomeViewModel extends ViewModel {
     public boolean showChips = true;
     public boolean showGrafico = true;
 
+    public boolean podeMostrarResultSnackbar = false;
+
 
     //a seguir alguns liveDatas que podem ser observados a partir do fragment
     public MutableLiveData<List<AtividadeComplementar>> listaDeAtividades = new MutableLiveData<>();
@@ -35,6 +38,8 @@ public class FragmentHomeViewModel extends ViewModel {
     public MutableLiveData<String> cargaTotalLD = new MutableLiveData<>();
     public MutableLiveData<String> cargaTotalObtida = new MutableLiveData<>();
     public MutableLiveData<Integer> porcentagemHorasConcluidas = new MutableLiveData<>();
+
+    public MutableLiveData<String> resultadoExclusaoAtividadeComplementar = new MutableLiveData<>();
     public boolean completouHorasComplementares = false;
 
 
@@ -165,5 +170,22 @@ public class FragmentHomeViewModel extends ViewModel {
         }
 
 
+    }
+
+    public void excluirAtividadeComplementar(AtividadeComplementar atividadeComplementar) {
+        persistenciaFirebase.excluirAtividadeComplementar(atividadeComplementar, new ExcluiuAtividadeComplementar(){
+
+            @Override
+            public void excluiuAtividadeComplementar(boolean excluiu) {
+                podeMostrarResultSnackbar = true;
+                if(excluiu){
+                    resultadoExclusaoAtividadeComplementar.setValue("excluiu");
+
+                }else {
+                    resultadoExclusaoAtividadeComplementar.setValue("falha na exclusao");
+                }
+
+            }
+        });
     }
 }

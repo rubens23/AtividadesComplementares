@@ -9,6 +9,8 @@ import com.example.atividadescomplementares.dados.atividadeComplementar.Atividad
 import com.example.atividadescomplementares.dados.atividadeComplementar.PersistenciaFirebase;
 import com.example.atividadescomplementares.dados.atividadeComplementar.SalvouAtividadeCallback;
 
+import java.util.UUID;
+
 
 /**
  * viewModel que faz a ponte entre a tela de formulario
@@ -44,7 +46,8 @@ public class FragmentFormularioViewModel extends ViewModel {
                         selectedItemAtividades,
                         cargaHoraria,
                         descricao,
-                        local),
+                        local,
+                        UUID.randomUUID().toString()),
                 new SalvouAtividadeCallback() {
                     @Override
                     public void salvouNovaAtividade(boolean salvou) {

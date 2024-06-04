@@ -54,7 +54,11 @@
         android:id="@+id/paginaInicial"
         android:name="com.example.atividadescomplementares.telas.home.FragmentHome"
         android:label="FragmentHome"
-        tools:layout="@layout/fragment_home"/>
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_paginaInicial_to_fragmentEditarAtividadeComplementar"
+            app:destination="@id/fragmentEditarAtividadeComplementar" />
+    </fragment>
     <fragment
         android:id="@+id/formulario"
         android:name="com.example.atividadescomplementares.telas.formulario.FragmentFormulario"
@@ -74,4 +78,15 @@
         android:name="com.example.atividadescomplementares.telas.configuracoes.FragmentConfiguracoes"
         android:label="FragmentConfiguracoes"
         tools:layout="@layout/fragment_configuracoes"/>
+    <fragment
+        android:id="@+id/fragmentEditarAtividadeComplementar"
+        android:name="com.example.atividadescomplementares.telas.editarAtividadeComplementar.FragmentEditarAtividadeComplementar"
+        android:label="FragmentEditarAtividadeComplementar"
+        tools:layout="@layout/fragment_editar_atividade_complementar">
+
+        <argument
+            android:name="atividadeJson"
+            app:argType="string"/>
+
+    </fragment>
 </navigation>

@@ -103,7 +103,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:drawableStart="@drawable/baseline_access_time_24"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/btnSalvarNovoEmail"
                 android:drawablePadding="5dp"
