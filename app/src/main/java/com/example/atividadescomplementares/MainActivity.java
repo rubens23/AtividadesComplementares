@@ -97,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
             NavigationUI.setupWithNavController(binding.bottomNavigationView, navController);
 
             if (iniciarComHomeScreen){
+                navController.popBackStack();
                 navController.navigate(R.id.paginaInicial);
             }
 
@@ -121,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
                     //condição para setar a cor da status bar de acordo com o fragment
                     if (navDestination.getId() == R.id.fragmentBoasVindas) {
                         if (currentNightMode != Configuration.UI_MODE_NIGHT_YES) {
-                            getWindow().setStatusBarColor(ContextCompat.getColor(getApplicationContext(), R.color.mainPink));
+                            getWindow().setStatusBarColor(ContextCompat.getColor(getApplicationContext(), R.color.statusBarColor1));
 
                         }
 

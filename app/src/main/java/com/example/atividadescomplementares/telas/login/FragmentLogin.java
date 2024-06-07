@@ -102,11 +102,13 @@ public class FragmentLogin extends Fragment {
             String email = binding.etEmail.getText().toString();
             String senha = binding.etSenha.getText().toString();
 
+
+
             if(email.isEmpty() || senha.isEmpty()){
                 showSnackbar("Preencha email e senha!");
 
             }else {
-                mViewModel.fazerLogin(email, senha);
+                    mViewModel.fazerLogin(email, senha);
             }
         });
     }

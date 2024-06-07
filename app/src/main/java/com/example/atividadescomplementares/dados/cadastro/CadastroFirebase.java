@@ -26,6 +26,8 @@ public class CadastroFirebase {
 
     //metodo para cadastrar um novo usuário
     public void cadastrarNovoUsuario(String email, String password, CadastroCallback cadastroCallback){
+
+
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override

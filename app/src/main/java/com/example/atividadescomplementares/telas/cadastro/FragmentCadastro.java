@@ -164,7 +164,7 @@ public class FragmentCadastro extends Fragment {
             binding.etSenha.setError("Digite uma senha");
         } else if (senha.length() < 6) {
             cadastroValido = false;
-            binding.etSenha.setError("Digite uma senha com pelo menos 6 digitos");
+            binding.etSenha.setError("Digite uma senha com pelo menos 6 dígitos");
         } else if (!senha.equals(confirmaSenha)) {
             cadastroValido = false;
             binding.etSenha.setError("As senhas digitadas não são iguais");

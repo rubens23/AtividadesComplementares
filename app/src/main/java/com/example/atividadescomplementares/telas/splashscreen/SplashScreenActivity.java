@@ -6,9 +6,12 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-
+import android.view.View;
+import android.view.WindowManager;
+import androidx.core.splashscreen.SplashScreen;
 import com.example.atividadescomplementares.MainActivity;
 import com.example.atividadescomplementares.R;
 import com.example.atividadescomplementares.telas.splashscreen.viewmodel.SplashScreenViewModel;
@@ -19,8 +22,30 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+        //splashScreen.setKeepOnScreenCondition(()->true);
+
+
+
+
+
+//        getWindow().setStatusBarColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
+//
+//        changeStatusBarTextColor();
+//        int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+//
+//        if (currentNightMode != Configuration.UI_MODE_NIGHT_YES) {
+//            getWindow().setStatusBarColor(ContextCompat.getColor(getApplicationContext(), R.color.mainPink));
+//
+//        }else {
+//            getWindow().setStatusBarColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
+//
+//        }
+
+
+
 
 
 
@@ -28,6 +53,8 @@ public class SplashScreenActivity extends AppCompatActivity {
 
 
     }
+
+
 
     @Override
     protected void onStart() {
@@ -45,6 +72,21 @@ public class SplashScreenActivity extends AppCompatActivity {
         intent.putExtras(bundle);
         startActivity(intent);
         finish();
+    }
+
+
+    private void changeStatusBarTextColor() {
+        //muda a cor da status bar de acordo com modo escuro ou claro
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+            if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
+                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+
+            } else {
+                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+
+            }
+        }
     }
 }
 
